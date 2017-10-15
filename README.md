@@ -1,7 +1,7 @@
 # Coding from scratch a single hidden-layer neural network classifier
 
 <p align="center">
-<img src="https://github.com/ankonzoid/Deep-Reinforcement-Learning-Tutorials/blob/master/hunterprey/images/NN.png" width="50%">
+<img src="https://github.com/ankonzoid/NN-from-scratch/blob/master/images/NN.png" width="50%">
 </p>
  
 We build and train a single hidden fullly-connected layer neural network classifier written from scratch (no high-level libraries such as tensorflow, keras, pytorch, etc), and train it via back-propagation on the "seeds_dataset.csv" (https://archive.ics.uci.edu/ml/datasets/seeds) data set containing measurements of geometrical properties of kernels belonging to three different varieties of wheat. The loss function is assumed to be L2-norm, and we do not include any biases in the activation calculation. Also, a sigmoid transfer function is used on all nodes.
