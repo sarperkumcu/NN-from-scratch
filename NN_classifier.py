@@ -47,7 +47,7 @@ def main():
     # Create cross-validation folds
     # These are a list of a list of indices for each fold
     # ===================================
-    idx_all = np.arange(0,N)
+    idx_all = np.arange(0, N)
     idx_folds = utils.crossval_folds(N, n_folds, seed=1)
 
     # ===================================
@@ -55,7 +55,7 @@ def main():
     # ===================================
     accuracy_train = list()
     accuracy_test = list()
-    print("Training and cross-validating...")
+    print("\nTraining and cross-validating...")
     for i, idx_test in enumerate(idx_folds):
 
         # Collect training and test data from folds

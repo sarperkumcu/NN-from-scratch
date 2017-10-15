@@ -23,6 +23,7 @@ The output should look similar to:
 Reading 'data/seeds_dataset.csv'...
 X.shape = (210, 7)
 y.shape = (210,)
+
 Training and cross-validating...
 Fold 1/4: train acc = 93.04%, test acc = 94.23% (n_train = 158, n_test = 52)
 Fold 2/4: train acc = 93.04%, test acc = 98.08% (n_train = 158, n_test = 52)

@@ -51,23 +51,23 @@ class NeuralNetwork:
         for epoch in range(n_epoch):
             for (x, y) in zip(X_train, y_train):
                 # Forward-pass training example into network (updates node output)
-                self.forward_pass(x)
+                self._forward_pass(x)
                 # Create target output
                 y_target = np.zeros(self.n_output, dtype=np.int)
                 y_target[y] = 1
                 # Backward-pass error into network (updates node delta)
-                self.backward_pass(y_target)
+                self._backward_pass(y_target)
                 # Update network weights (using updated node delta and node output)
-                self.update_weights(x, l_rate=l_rate)
+                self._update_weights(x, l_rate=l_rate)
 
     #
-    # Predict most probable class labels for a data set
+    # Predict most probable class labels for a data set X
     #
     def predict(self, X):
 
         y_predict = np.zeros(len(X), dtype=np.int)
         for i, x in enumerate(X):
-            output = self.forward_pass(x)  # output class probabilities
+            output = self._forward_pass(x)  # output class probabilities
             y_predict[i] = np.argmax(output)  # predict highest prob class
 
         return y_predict
@@ -82,8 +82,9 @@ class NeuralNetwork:
     # Forward-pass input -> output and save to network node values
     # This updates: node['output']
     #
-    def forward_pass(self, x):
+    def _forward_pass(self, x):
 
+        # Weighted sum of inputs with no bias term for our activation
         def activate(weights, inputs):
             activation = 0.0
             for i in range(len(weights)):
@@ -95,8 +96,9 @@ class NeuralNetwork:
         for layer in self.network:
             output = list()
             for node in layer:
+                # Compute activation and apply transfer to it
                 activation = activate(node['weights'], input)
-                node['output'] = self.transfer_func(activation)
+                node['output'] = self._transfer(activation)
                 output.append(node['output'])
             input = output
 
@@ -107,14 +109,16 @@ class NeuralNetwork:
     # The loss function is assumed to be L2-error.
     # This updates: node['delta']
     #
-    def backward_pass(self, target):
+    def _backward_pass(self, target):
 
         # Perform backward-pass through network to update node deltas
         n_layers = len(self.network)
         for i in reversed(range(n_layers)):
             layer = self.network[i]
 
-            # Compute errors
+            # Compute errors either:
+            # - explicit target output difference on last layer
+            # - weights sum of deltas from frontward layers
             errors = list()
             if i == n_layers - 1:
                 # Last layer: errors = target output difference
@@ -130,17 +134,22 @@ class NeuralNetwork:
                     errors.append(error)
 
             # Update delta using our errors
+            # The weight update will be:
+            # dW = learning_rate * errors * transfer' * input
+            #    = learning_rate * delta * input
             for j, node in enumerate(layer):
-                node['delta'] = errors[j] * self.transfer_func_derivative(node['output'])
+                node['delta'] = errors[j] * self._transfer_derivative(node['output'])
 
     #
     # Update network weights with error
     # This updates: node['weights']
     #
-    def update_weights(self, x, l_rate=0.3):
+    def _update_weights(self, x, l_rate=0.3):
 
+        # Update weights forward layer by layer
         for i_layer, layer in enumerate(self.network):
-            # Choose input
+
+            # Choose previous layer output to update current layer weights
             if i_layer == 0:
                 inputs = x
             else:
@@ -148,17 +157,19 @@ class NeuralNetwork:
                 for i_node, node in enumerate(self.network[i_layer - 1]):
                     inputs[i_node] = node['output']
 
-            # Update weights
+            # Update weights using delta rule for single layer neural network
+            # The weight update will be:
+            # dW = learning_rate * errors * transfer' * input
+            #    = learning_rate * delta * input
             for node in layer:
                 for j, input in enumerate(inputs):
-                    node['weights'][j] += l_rate * node['delta'] * input
+                    dW = l_rate * node['delta'] * input
+                    node['weights'][j] += dW
 
     # Transfer function (sigmoid)
-    def transfer_func(self, x):
-        sigmoid = 1.0/(1.0+exp(-x))
-        return sigmoid
+    def _transfer(self, x):
+        return 1.0/(1.0+exp(-x))
 
     # Transfer function derivative (sigmoid)
-    def transfer_func_derivative(self, x):
-        sigmoid_derivative = x*(1.0-x)
-        return sigmoid_derivative
+    def _transfer_derivative(self, transfer):
+        return transfer*(1.0-transfer)
