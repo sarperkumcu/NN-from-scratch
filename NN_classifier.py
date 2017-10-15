@@ -11,7 +11,7 @@
  which should be an integer to represent the class labels. The pre-processing
  of the data also normalizes each feature column of X.
 
- Some of this code was inspired by a similar implementation:
+ This code was inspired by:
  https://machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/
 
 """

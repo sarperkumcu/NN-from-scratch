@@ -1,4 +1,4 @@
-# Coding from scratch a single hidden-layer neural network classifier
+# Coding up a Neural Network classifier from scratch
 
 <p align="center">
 <img src="https://github.com/ankonzoid/NN-from-scratch/blob/master/images/NN.png" width="50%">
@@ -8,7 +8,7 @@ We build and train a single hidden fullly-connected layer neural network classif
 
  If you would like to import your own dataset, then follow the format of the data being entirely of floats except for the last column which should be only integer class labels. The code does pre-processing of the data X by normalizing each feature column.
 
- This code was inspired by another implementation:
+ This code was inspired by:
  https://machinelearningmastery.com/implement-backpropagation-algorithm-scratch-python/
 
 ### Usage:
@@ -24,14 +24,13 @@ Reading 'data/seeds_dataset.csv'...
 X.shape = (210, 7)
 y.shape = (210,)
 Training and cross-validating...
-Fold 1/4: train acc = 87.34%, test acc = 86.54% (n_train = 158, n_test = 52)
-Fold 2/4: train acc = 91.77%, test acc = 96.15% (n_train = 158, n_test = 52)
-Fold 3/4: train acc = 88.61%, test acc = 78.85% (n_train = 158, n_test = 52)
-Fold 4/4: train acc = 88.61%, test acc = 75.00% (n_train = 158, n_test = 52)
+Fold 1/4: train acc = 93.04%, test acc = 94.23% (n_train = 158, n_test = 52)
+Fold 2/4: train acc = 93.04%, test acc = 98.08% (n_train = 158, n_test = 52)
+Fold 3/4: train acc = 97.47%, test acc = 92.31% (n_train = 158, n_test = 52)
+Fold 4/4: train acc = 96.84%, test acc = 96.15% (n_train = 158, n_test = 52)
 
-Avg train acc = 89.08%
-Avg test acc = 84.13%
-
+Avg train acc = 95.09%
+Avg test acc = 95.19%
 ```
 
 ### Libraries required:

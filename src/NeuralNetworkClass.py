@@ -152,7 +152,6 @@ class NeuralNetwork:
             for node in layer:
                 for j, input in enumerate(inputs):
                     node['weights'][j] += l_rate * node['delta'] * input
-                node['weights'][-1] += l_rate * node['delta']
 
     # Transfer function (sigmoid)
     def transfer_func(self, x):
