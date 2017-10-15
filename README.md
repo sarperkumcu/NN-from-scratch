@@ -21,17 +21,18 @@ The output should look similar to:
 
 ```
 Reading 'data/seeds_dataset.csv'...
-X.shape = (210, 7)
-y.shape = (210,)
+ X.shape = (210, 7)
+ y.shape = (210,)
+ n_classes = 3
 
 Training and cross-validating...
-Fold 1/4: train acc = 93.04%, test acc = 94.23% (n_train = 158, n_test = 52)
-Fold 2/4: train acc = 93.04%, test acc = 98.08% (n_train = 158, n_test = 52)
-Fold 3/4: train acc = 97.47%, test acc = 92.31% (n_train = 158, n_test = 52)
-Fold 4/4: train acc = 96.84%, test acc = 96.15% (n_train = 158, n_test = 52)
+ Fold 1/4: train acc = 93.04%, test acc = 92.31% (n_train = 158, n_test = 52)
+ Fold 2/4: train acc = 92.41%, test acc = 98.08% (n_train = 158, n_test = 52)
+ Fold 3/4: train acc = 98.10%, test acc = 94.23% (n_train = 158, n_test = 52)
+ Fold 4/4: train acc = 97.47%, test acc = 94.23% (n_train = 158, n_test = 52)
 
-Avg train acc = 95.09%
-Avg test acc = 95.19%
+Avg train acc = 95.25%
+Avg test acc = 94.71%
 ```
 
 ### Libraries required:

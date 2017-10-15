@@ -40,8 +40,9 @@ def main():
     (N, d) = X.shape  # extract shape of X
     n_classes = len(np.unique(y))
 
-    print("X.shape = {}".format(X.shape))
-    print("y.shape = {}".format(y.shape))
+    print(" X.shape = {}".format(X.shape))
+    print(" y.shape = {}".format(y.shape))
+    print(" n_classes = {}".format(n_classes))
 
     # ===================================
     # Create cross-validation folds
@@ -77,7 +78,7 @@ def main():
         accuracy_test.append(100*np.sum(y_test==y_test_predict)/len(y_test))
 
         # Print cross-validation result
-        print("Fold {}/{}: train acc = {:.2f}%, test acc = {:.2f}% (n_train = {}, n_test = {})".format(i+1, n_folds, accuracy_train[-1], accuracy_test[-1], len(X_train), len(X_test)))
+        print(" Fold {}/{}: train acc = {:.2f}%, test acc = {:.2f}% (n_train = {}, n_test = {})".format(i+1, n_folds, accuracy_train[-1], accuracy_test[-1], len(X_train), len(X_test)))
 
     # ===================================
     # Print results
