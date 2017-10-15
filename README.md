@@ -1,6 +1,6 @@
-# Coding up a single FC-layer neural network from scratch
+# Coding from scratch a single hidden-layer neural network classifier
  
-We build and train a neural network classifier written from scratch (no high-level libraries such as tensorflow, keras, pytorch, etc), and train it via back-propagation on the "seeds_dataset.csv" (https://archive.ics.uci.edu/ml/datasets/seeds) data set containing measurements of geometrical properties of kernels belonging to three different varieties of wheat. The loss function is assumed to be L2-norm, and we do not include any biases in the activation calculation. Also, a sigmoid transfer function is used on all nodes.
+We build and train a single hidden fullly-connected layer neural network classifier written from scratch (no high-level libraries such as tensorflow, keras, pytorch, etc), and train it via back-propagation on the "seeds_dataset.csv" (https://archive.ics.uci.edu/ml/datasets/seeds) data set containing measurements of geometrical properties of kernels belonging to three different varieties of wheat. The loss function is assumed to be L2-norm, and we do not include any biases in the activation calculation. Also, a sigmoid transfer function is used on all nodes.
 
  If you would like to import your own dataset, then follow the format of the data being entirely of floats except for the last column which should be only integer class labels. The code does pre-processing of the data X by normalizing each feature column.
 
@@ -14,6 +14,7 @@ Run the command
 > python NN_classifier.py
 
 The output should look similar to:
+
 ```
 Reading 'data/seeds_dataset.csv'...
 X.shape = (210, 7)
