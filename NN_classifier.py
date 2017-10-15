@@ -5,7 +5,10 @@
  Building and training a neural network classifier with back-propagation
  from scratch. The loss function is assumed to be L2-norm, and we
  do not include any biases in the activation calculation. Also,
- a sigmoid transfer function is used on all nodes.
+ a sigmoid transfer function is used on all nodes. The delta rule (gradient
+ descent) is used as our weight update rule which takes advantage of the
+ L2-loss function and single-layer network. More on the delta rule can
+ be found at: https://en.wikipedia.org/wiki/Delta_rule.
 
  The format of the input data should be floats except for the last column
  which should be an integer to represent the class labels. The pre-processing
