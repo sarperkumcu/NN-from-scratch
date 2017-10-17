@@ -19,8 +19,7 @@ class NeuralNetwork:
 
     #
     # Build neural network via settings weights between nodes
-    # Note: we add an extra last weight for the bias which will
-    # only be relevant in the propagation
+    # Note: we have no bias terms here
     #
     def build_network(self):
 
