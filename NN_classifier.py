@@ -6,8 +6,8 @@
  from scratch. The loss function is assumed to be L2-norm, and we
  do not include any biases in the activation calculation. Also,
  a sigmoid transfer function is used on all nodes. The delta rule (gradient
- descent) is used as our weight update rule which takes advantage of the
- L2-loss function and single-layer network. More on the delta rule can
+ descent) is used as our weight update rule is gradient descent on
+ L2-loss function. More on the delta rule can
  be found at: https://en.wikipedia.org/wiki/Delta_rule.
 
  The format of the input data should be floats except for the last column
@@ -32,6 +32,7 @@ def main():
     l_rate = 0.6  # learning rate
     n_epoch = 800  # training epochs
     n_hidden = 5  # nodes in hidden layer
+    n_hidden_layers = 1  # number of hidden layers
     n_folds = 4  # number of folds for cross-validation
 
     # ===================================
@@ -68,7 +69,10 @@ def main():
         (X_test, y_test) = (X[idx_test], y[idx_test])
 
         # Set architecture and train NN model
-        model = NeuralNetwork(n_input=d, n_output=n_classes, n_hidden=n_hidden)
+        model = NeuralNetwork(n_input=d,
+                              n_output=n_classes,
+                              n_hidden=n_hidden,
+                              n_hidden_layers=n_hidden_layers)
         model.build_network()
         model.train(X_train, y_train, l_rate=l_rate, n_epoch=n_epoch)
 

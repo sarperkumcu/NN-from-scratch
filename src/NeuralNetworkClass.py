@@ -11,10 +11,11 @@ class NeuralNetwork:
     #
     # Initialize
     #
-    def __init__(self, n_input=None, n_output=None, n_hidden=None):
+    def __init__(self, n_input=None, n_output=None, n_hidden=None, n_hidden_layers=None):
         self.n_input = n_input  # number of features
         self.n_output = n_output  # number of classes
-        self.n_hidden = n_hidden  # number of hidden nodes
+        self.n_hidden = n_hidden  # number of hidden nodes per layer
+        self.n_hidden_layers = n_hidden_layers  # number of hidden layers
         self.network = None
 
     #
@@ -35,9 +36,11 @@ class NeuralNetwork:
                               "delta": None})
             return layer
 
-        # Build weights (input layer -> hidden layer -> output layer)
+        # Build weights: input layer -> hidden layer(s)  -> output layer
         network = list()
         network.append(build_layer(self.n_input, self.n_hidden))
+        for i in range(self.n_hidden_layers-1):
+            network.append(build_layer(self.n_hidden, self.n_hidden))
         network.append(build_layer(self.n_hidden, self.n_output))
 
         self.network = network
