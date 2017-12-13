@@ -11,11 +11,10 @@ class NeuralNetwork:
     #
     # Initialize
     #
-    def __init__(self, n_input=None, n_output=None, n_hidden=None, n_hidden_layers=None):
+    def __init__(self, n_input=None, n_output=None, n_hidden_nodes=None):
         self.n_input = n_input  # number of features
         self.n_output = n_output  # number of classes
-        self.n_hidden = n_hidden  # number of hidden nodes per layer
-        self.n_hidden_layers = n_hidden_layers  # number of hidden layers
+        self.n_hidden_nodes = n_hidden_nodes  # number of hidden nodes/layers
         self.network = None
 
     #
@@ -37,20 +36,27 @@ class NeuralNetwork:
             return layer
 
         # Build weights: input layer -> hidden layer(s)  -> output layer
+        n_hidden_layers = len(self.n_hidden_nodes)
         network = list()
-        network.append(build_layer(self.n_input, self.n_hidden))
-        for i in range(self.n_hidden_layers-1):
-            network.append(build_layer(self.n_hidden, self.n_hidden))
-        network.append(build_layer(self.n_hidden, self.n_output))
-
+        if n_hidden_layers == 0:
+            network.append(build_layer(self.n_input,
+                                       self.n_output))
+        else:
+            network.append(build_layer(self.n_input,
+                                       self.n_hidden_nodes[0]))
+            for i in range(1,n_hidden_layers):
+                network.append(build_layer(self.n_hidden_nodes[i-1],
+                                           self.n_hidden_nodes[i]))
+            network.append(build_layer(self.n_hidden_nodes[n_hidden_layers-1],
+                                       self.n_output))
         self.network = network
 
     #
     # Train network
     #
-    def train(self, X_train, y_train, l_rate=0.5, n_epoch=1000):
+    def train(self, X_train, y_train, l_rate=0.5, n_epochs=1000):
 
-        for epoch in range(n_epoch):
+        for epoch in range(n_epochs):
             for (x, y) in zip(X_train, y_train):
                 # Forward-pass training example into network (updates node output)
                 self._forward_pass(x)

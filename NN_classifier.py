@@ -19,26 +19,28 @@
 
 """
 import numpy as np
-import sys, os
-sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
-from NeuralNetworkClass import NeuralNetwork
-import utils
+from src.NeuralNetworkClass import NeuralNetwork
+import src.utils as utils
 
 def main():
     # ===================================
     # Settings
     # ===================================
     filename = "data/seeds_dataset.csv"
+    n_hidden_nodes = [5]  # nodes in hidden layers i.e. [n_nodes_1, n_nodes_2, ...]
     l_rate = 0.6  # learning rate
-    n_epoch = 800  # training epochs
-    n_hidden = 5  # nodes in hidden layer
-    n_hidden_layers = 1  # number of hidden layers
+    n_epochs = 800  # number of training epochs
     n_folds = 4  # number of folds for cross-validation
+
+    print("Neural network model:\n n_hidden_nodes = {}".format(n_hidden_nodes))
+    print(" l_rate = {}".format(l_rate))
+    print(" n_epochs = {}".format(n_epochs))
+    print(" n_folds = {}".format(n_folds))
 
     # ===================================
     # Read data (X,y) and normalize X
     # ===================================
-    print("Reading '{}'...".format(filename))
+    print("\nReading '{}'...".format(filename))
     X, y = utils.read_csv(filename)  # read as matrix of floats and int
     utils.normalize(X)  # normalize
     (N, d) = X.shape  # extract shape of X
@@ -68,13 +70,12 @@ def main():
         (X_train, y_train) = (X[idx_train], y[idx_train])
         (X_test, y_test) = (X[idx_test], y[idx_test])
 
-        # Set architecture and train NN model
+        # Build neural network classifier model and train
         model = NeuralNetwork(n_input=d,
                               n_output=n_classes,
-                              n_hidden=n_hidden,
-                              n_hidden_layers=n_hidden_layers)
+                              n_hidden_nodes=n_hidden_nodes)
         model.build_network()
-        model.train(X_train, y_train, l_rate=l_rate, n_epoch=n_epoch)
+        model.train(X_train, y_train, l_rate=l_rate, n_epochs=n_epochs)
 
         # Make predictions for training and test data
         y_train_predict = model.predict(X_train)
