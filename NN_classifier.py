@@ -43,7 +43,7 @@ def main():
     print("\nReading '{}'...".format(filename))
     X, y = utils.read_csv(filename)  # read as matrix of floats and int
     utils.normalize(X)  # normalize
-    (N, d) = X.shape  # extract shape of X
+    N, d = X.shape  # extract shape of X
     n_classes = len(np.unique(y))
 
     print(" X.shape = {}".format(X.shape))
@@ -60,15 +60,14 @@ def main():
     # ===================================
     # Train and evaluate the model on each fold
     # ===================================
-    accuracy_train = list()
-    accuracy_test = list()
+    acc_train, acc_test = list(), list()  # training/test accuracy score
     print("\nTraining and cross-validating...")
     for i, idx_test in enumerate(idx_folds):
 
         # Collect training and test data from folds
         idx_train = np.delete(idx_all, idx_test)
-        (X_train, y_train) = (X[idx_train], y[idx_train])
-        (X_test, y_test) = (X[idx_test], y[idx_test])
+        X_train, y_train = X[idx_train], y[idx_train]
+        X_test, y_test = X[idx_test], y[idx_test]
 
         # Build neural network classifier model and train
         model = NeuralNetwork(n_input=d,
@@ -81,18 +80,18 @@ def main():
         y_train_predict = model.predict(X_train)
         y_test_predict = model.predict(X_test)
 
-        # Compute test accuracy score from predicted values
-        accuracy_train.append(100*np.sum(y_train==y_train_predict)/len(y_train))
-        accuracy_test.append(100*np.sum(y_test==y_test_predict)/len(y_test))
+        # Compute training/test accuracy score from predicted values
+        acc_train.append(100*np.sum(y_train==y_train_predict)/len(y_train))
+        acc_test.append(100*np.sum(y_test==y_test_predict)/len(y_test))
 
         # Print cross-validation result
-        print(" Fold {}/{}: train acc = {:.2f}%, test acc = {:.2f}% (n_train = {}, n_test = {})".format(i+1, n_folds, accuracy_train[-1], accuracy_test[-1], len(X_train), len(X_test)))
+        print(" Fold {}/{}: train acc = {:.2f}%, test acc = {:.2f}% (n_train = {}, n_test = {})".format(i+1, n_folds, acc_train[-1], acc_test[-1], len(X_train), len(X_test)))
 
     # ===================================
     # Print results
     # ===================================
-    print("\nAvg train acc = {:.2f}%".format(sum(accuracy_train) / float(len(accuracy_train))))
-    print("Avg test acc = {:.2f}%".format(sum(accuracy_test) / float(len(accuracy_test))))
+    print("\nAvg train acc = {:.2f}%".format(sum(acc_train)/float(len(acc_train))))
+    print("Avg test acc = {:.2f}%".format(sum(acc_test)/float(len(acc_test))))
 
 
 # Driver
