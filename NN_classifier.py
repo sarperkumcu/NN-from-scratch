@@ -70,10 +70,7 @@ def main():
         X_test, y_test = X[idx_test], y[idx_test]
 
         # Build neural network classifier model and train
-        model = NeuralNetwork(n_input=d,
-                              n_output=n_classes,
-                              n_hidden_nodes=n_hidden_nodes)
-        model.build_network()
+        model = NeuralNetwork(n_input=d, n_output=n_classes, n_hidden_nodes=n_hidden_nodes)
         model.train(X_train, y_train, l_rate=l_rate, n_epochs=n_epochs)
 
         # Make predictions for training and test data

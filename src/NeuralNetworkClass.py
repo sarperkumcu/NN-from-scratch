@@ -15,41 +15,7 @@ class NeuralNetwork:
         self.n_input = n_input  # number of features
         self.n_output = n_output  # number of classes
         self.n_hidden_nodes = n_hidden_nodes  # number of hidden nodes/layers
-        self.network = None
-
-    #
-    # Build neural network via settings weights between nodes
-    # Note: we have no bias terms here
-    #
-    def build_network(self):
-
-        # Connect input nodes with outputs nodes using weights
-        def build_layer(n_input, n_output):
-            layer = list()
-            for idx_out in range(n_output):
-                weights = list()
-                for idx_in in range(n_input):
-                    weights.append(random.random())
-                layer.append({"weights": weights,
-                              "output": None,
-                              "delta": None})
-            return layer
-
-        # Build weights: input layer -> hidden layer(s)  -> output layer
-        n_hidden_layers = len(self.n_hidden_nodes)
-        network = list()
-        if n_hidden_layers == 0:
-            network.append(build_layer(self.n_input,
-                                       self.n_output))
-        else:
-            network.append(build_layer(self.n_input,
-                                       self.n_hidden_nodes[0]))
-            for i in range(1,n_hidden_layers):
-                network.append(build_layer(self.n_hidden_nodes[i-1],
-                                           self.n_hidden_nodes[i]))
-            network.append(build_layer(self.n_hidden_nodes[n_hidden_layers-1],
-                                       self.n_output))
-        self.network = network
+        self.network = self._build_network()
 
     #
     # Train network
@@ -85,6 +51,39 @@ class NeuralNetwork:
     # Internal functions
     #
     # ==============================
+
+    #
+    # Build neural network via settings weights between nodes
+    # Note: we have no bias terms here
+    #
+    def _build_network(self):
+
+        # Connect input nodes with outputs nodes using weights
+        def _build_layer(n_input, n_output):
+            layer = list()
+            for idx_out in range(n_output):
+                weights = list()
+                for idx_in in range(n_input):
+                    weights.append(random.random())
+                layer.append({"weights": weights,
+                              "output": None,
+                              "delta": None})
+            return layer
+
+        # Build weights: input layer -> hidden layer(s)  -> output layer
+        n_hidden_layers = len(self.n_hidden_nodes)
+        network = list()
+        if n_hidden_layers == 0:
+            network.append(_build_layer(self.n_input, self.n_output))
+        else:
+            network.append(_build_layer(self.n_input, self.n_hidden_nodes[0]))
+            for i in range(1,n_hidden_layers):
+                network.append(_build_layer(self.n_hidden_nodes[i-1],
+                                            self.n_hidden_nodes[i]))
+            network.append(_build_layer(self.n_hidden_nodes[n_hidden_layers-1],
+                                        self.n_output))
+
+        return network
 
     #
     # Forward-pass input -> output and save to network node values
