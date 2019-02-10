@@ -9,16 +9,15 @@ from csv import reader
 #
 # Read csv file as X, y data (last column is class label)
 #
-def read_csv(filename):
+def read_csv(filename, normalize=False):
     X_str = list()  # data (float)
     y_str = list()  # class labels (integers)
 
     # Read X and y data from csv file
     with open(filename, 'r') as file:
         csv_reader = reader(file)
-        for row in csv_reader:
-            # Skip row if empty
-            if not row:
+        for i, row in enumerate(csv_reader):
+            if i == 0: # skip row if empty
                 continue
             else:
                 X_str.append(row[:-1])
@@ -41,20 +40,13 @@ def read_csv(filename):
     # Convert to numpy arrays
     X = np.array(X_str, dtype=np.float32)
     y = np.array(y_idx, dtype=np.int)
+    n_classes = len(np.unique(y))
 
-    return (X, y)
+    # Normalize (optional)
+    if normalize:
+        X = (X - X.mean(axis=0)) / X.std(axis=0)
 
-#
-# Normalize X data
-#
-def normalize(X):
-    # Find the min and max values for each column
-    x_min = X.min(axis=0)
-    x_max = X.max(axis=0)
-    # Normalize
-    for x in X:
-        for j in range(X.shape[1]):
-            x[j] = (x[j]-x_min[j])/(x_max[j]-x_min[j])
+    return X, y, n_classes
 
 #
 # Randomly permute and extract indices for each fold

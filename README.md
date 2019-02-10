@@ -4,7 +4,7 @@
 <img src="https://github.com/ankonzoid/NN-from-scratch/blob/master/images/NN.png" width="50%">
 </p>
  
-We build and train a single hidden fullly-connected layer neural network classifier written from scratch (no high-level libraries such as tensorflow, keras, pytorch, etc), and train it via back-propagation on the "seeds_dataset.csv" (https://archive.ics.uci.edu/ml/datasets/seeds) data set containing measurements of geometrical properties of kernels belonging to three different varieties of wheat. The loss function is assumed to be L2-norm, and we do not include any biases in the activation calculation. Also, a sigmoid transfer function is used on all nodes. The delta rule (gradient descent) is used as our weight update rule which assumes the L2-loss function. More about the delta rule can be found at: https://en.wikipedia.org/wiki/Delta_rule.
+We build and train a single hidden fully-connected layer neural network classifier written from scratch (no high-level libraries such as tensorflow, keras, pytorch, etc), and train it via back-propagation on the "seeds_dataset.csv" (https://archive.ics.uci.edu/ml/datasets/seeds) data set containing measurements of geometrical properties of kernels belonging to three different varieties of wheat. The loss function is assumed to be L2-norm, and we do not include any biases in the activation calculation. Also, a sigmoid transfer function is used on all nodes. The delta rule (gradient descent) is used as our weight update rule which assumes the L2-loss function. More about the delta rule can be found at: https://en.wikipedia.org/wiki/Delta_rule.
 
  If you would like to import your own dataset, then follow the format of the data being entirely of floats except for the last column which should be only integer class labels. The code does pre-processing of the data X by normalizing each feature column.
 
@@ -43,4 +43,4 @@ Avg test acc = 93.27%
 
 ### Libraries required:
 
-* numpy
+* numpy, pandas
