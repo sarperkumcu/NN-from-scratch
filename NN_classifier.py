@@ -12,7 +12,6 @@
 
 """
 import numpy as np
-import pandas as pd
 from src.NeuralNetwork import NeuralNetwork
 import src.utils as utils
 
@@ -79,8 +78,8 @@ def main():
     # ===================================
     # Print results
     # ===================================
-    print("\nAvg acc_train = {:.2f}%".format(sum(acc_train)/float(len(acc_train))))
-    print("Avg acc_valid = {:.2f}%".format(sum(acc_valid)/float(len(acc_valid))))
+    print(" -> acc_train_avg = {:.2f}%, acc_valid_avg = {:.2f}%".format(
+        sum(acc_train)/float(len(acc_train)), sum(acc_valid)/float(len(acc_valid))))
 
 # Driver
 if __name__ == "__main__":
