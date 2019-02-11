@@ -4,11 +4,11 @@
 <img src="https://github.com/ankonzoid/NN-from-scratch/blob/master/images/NN.png" width="50%">
 </p>
  
-We build and train a single hidden fully-connected layer neural network (written from scratch ), to classify the seeds dataset (https://archive.ics.uci.edu/ml/datasets/seeds). An L2 loss function, sigmoid activation, and no bias terms are assumed. The weight optimization is gradient descent via the Delta Rule (gradient descent).
+We train a multi-layer fully-connected neural network from scratch to classify the seeds dataset (https://archive.ics.uci.edu/ml/datasets/seeds). An L2 loss function, sigmoid activation, and no bias terms are assumed. The weight optimization is gradient descent via the delta rule.
 
-### Usage:
+### Usage
 
-Run the command
+Run:
 
 > python3 NN_classifier.py
 
@@ -22,18 +22,18 @@ Neural network model:
  input_dim = 7
  hidden_layers = [5]
  output_dim = 3
- eta = 0.6
- n_epochs = 800
+ eta = 0.1
+ n_epochs = 400
  n_folds = 4
+ seed_crossval = 1
+ seed_weights = 1
 
 Cross-validating...
- Fold 1/4: acc_train = 98.73%, acc_valid = 98.08% (n_train = 158, n_test = 52)
- Fold 2/4: acc_train = 98.73%, acc_valid = 98.08% (n_train = 158, n_test = 52)
- Fold 3/4: acc_train = 98.73%, acc_valid = 96.15% (n_train = 158, n_test = 52)
- Fold 4/4: acc_train = 99.37%, acc_valid = 94.23% (n_train = 158, n_test = 52)
-
-Avg acc_train = 98.89%
-Avg acc_valid = 96.63%
+ Fold 1/4: acc_train = 98.10%, acc_valid = 94.23% (n_train = 158, n_valid = 52)
+ Fold 2/4: acc_train = 98.10%, acc_valid = 98.08% (n_train = 158, n_valid = 52)
+ Fold 3/4: acc_train = 98.73%, acc_valid = 96.15% (n_train = 158, n_valid = 52)
+ Fold 4/4: acc_train = 98.73%, acc_valid = 94.23% (n_train = 158, n_valid = 52)
+  -> acc_train_avg = 98.42%, acc_valid_avg = 95.67%
 ```
 
 ### Libraries required:
