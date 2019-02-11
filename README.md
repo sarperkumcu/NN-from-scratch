@@ -9,8 +9,9 @@ We train a multi-layer fully-connected neural network from scratch to classify t
 ### Usage
 
 Run:
-
-> python3 NN_classifier.py
+```
+python3 NN_classifier.py
+```
 
 The output should look similar to:
 
