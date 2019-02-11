@@ -49,7 +49,7 @@ def main():
     # Train/evaluate the model on each fold
     # ===================================
     acc_train, acc_valid = list(), list()  # training/test accuracy score
-    print("Cross-validating...")
+    print("Cross-validating with {} folds...".format(len(idx_folds)))
     for i, idx_valid in enumerate(idx_folds):
 
         # Collect training and test data from folds
@@ -63,12 +63,12 @@ def main():
         model.train(X_train, y_train, eta=eta, n_epochs=n_epochs)
 
         # Make predictions for training and test data
-        y_train_predict = model.predict(X_train)
-        y_test_predict = model.predict(X_valid)
+        ypred_train = model.predict(X_train)
+        ypred_valid = model.predict(X_valid)
 
         # Compute training/test accuracy score from predicted values
-        acc_train.append(100*np.sum(y_train==y_train_predict)/len(y_train))
-        acc_valid.append(100*np.sum(y_valid==y_test_predict)/len(y_valid))
+        acc_train.append(100*np.sum(y_train==ypred_train)/len(y_train))
+        acc_valid.append(100*np.sum(y_valid==ypred_valid)/len(y_valid))
 
         # Print cross-validation result
         print(" Fold {}/{}: acc_train = {:.2f}%, acc_valid = {:.2f}% (n_train = {}, n_valid = {})".format(i+1, n_folds, acc_train[-1], acc_valid[-1], len(X_train), len(X_valid)))

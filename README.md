@@ -29,7 +29,7 @@ Neural network model:
  seed_crossval = 1
  seed_weights = 1
 
-Cross-validating...
+Cross-validating with 4 folds...
  Fold 1/4: acc_train = 98.10%, acc_valid = 94.23% (n_train = 158, n_valid = 52)
  Fold 2/4: acc_train = 98.10%, acc_valid = 98.08% (n_train = 158, n_valid = 52)
  Fold 3/4: acc_train = 98.73%, acc_valid = 96.15% (n_train = 158, n_valid = 52)
