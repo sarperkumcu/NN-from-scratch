@@ -74,7 +74,8 @@ def main():
         acc_valid.append(100*np.sum(y_valid==ypred_valid)/len(y_valid))
 
         # Print cross-validation result
-        print(" Fold {}/{}: acc_train = {:.2f}%, acc_valid = {:.2f}% (n_train = {}, n_valid = {})".format(i+1, n_folds, acc_train[-1], acc_valid[-1], len(X_train), len(X_valid)))
+        print(" Fold {}/{}: acc_train = {:.2f}%, acc_valid = {:.2f}% (n_train = {}, n_valid = {})".format(
+            i+1, n_folds, acc_train[-1], acc_valid[-1], len(X_train), len(X_valid)))
 
     # ===================================
     # Print results
