@@ -4,61 +4,43 @@
 
 """
 import numpy as np
-from csv import reader
+import pandas as pd
 
-#
-# Read csv file as X, y data (last column is class label)
-#
-def read_csv(filename):
-    X_str = list()  # data (float)
-    y_str = list()  # class labels (integers)
+# Read csv file for (X, y, n_classes) data
+def read_csv(csv_filename, target_name="y", normalize=False):
 
-    # Read X and y data from csv file
-    with open(filename, 'r') as file:
-        csv_reader = reader(file)
-        for row in csv_reader:
-            # Skip row if empty
-            if not row:
-                continue
-            else:
-                X_str.append(row[:-1])
-                y_str.append(row[-1])
+    # Read csv
+    df = pd.read_csv(csv_filename, delimiter=",", dtype={target_name: np.str})
 
-    # Convert our class labels to 0, 1, 2, ..., n_classes-1
-    def convert_str2idx(y_str):
-        unique = set(y_str)
-        lookup = dict()
-        # Assign each unique class label an index 0, 1, 2, ..., n_classes-1
-        for idx_label, label in enumerate(unique):
-            lookup[label] = idx_label
-        y_idx = list()
-        for label in y_str:
-            y_idx.append(lookup[label])
-        return y_idx
+    # Check target exists
+    if list(df.columns.values).count(target_name) != 1:
+        raise Exception("Need exactly 1 count of '{}' in {}".format(target_name, csv_filename))
 
-    y_idx = convert_str2idx(y_str)
+    # Create (target -> index) mapping
+    map = {}
+    targets_unique = sorted(list(set(df[target_name].values)))
+    for i, target in enumerate(targets_unique):
+        map[target] = i
 
-    # Convert to numpy arrays
-    X = np.array(X_str, dtype=np.float32)
-    y = np.array(y_idx, dtype=np.int)
+    def class2idx(y_, map):
+        if y_ in map.keys(): return map[y_]
+        else: raise Exception("Invalid key provided!")
 
-    return (X, y)
+    # Grab features and targets
+    X = df.drop([target_name], axis=1).values
+    y = np.vectorize(class2idx)(df[target_name], map)
+    n_classes = len(map.keys())
 
-#
-# Normalize X data
-#
-def normalize(X):
-    # Find the min and max values for each column
-    x_min = X.min(axis=0)
-    x_max = X.max(axis=0)
-    # Normalize
-    for x in X:
-        for j in range(X.shape[1]):
-            x[j] = (x[j]-x_min[j])/(x_max[j]-x_min[j])
+    # Check shapes
+    if X.shape[0] != y.shape[0]:
+        raise Exception("X.shape = {} and y.shape = {} are inconsistent!".format(X.shape, y.shape))
 
-#
-# Randomly permute and extract indices for each fold
-#
+    # Normalize (optional)
+    if normalize: X = (X - X.mean(axis=0)) / X.std(axis=0)
+
+    return X, y, n_classes
+
+# Randomly permute [0,N] and extract indices for each fold
 def crossval_folds(N, n_folds, seed=1):
     np.random.seed(seed)
     idx_all_permute = np.random.permutation(N)
