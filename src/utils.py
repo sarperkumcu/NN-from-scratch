@@ -10,8 +10,15 @@ import pandas as pd
 def read_csv(csv_filename, target_name="y", normalize=False):
 
     # Read csv
-    df = pd.read_csv(csv_filename, delimiter=",", dtype={target_name: np.str})
-
+    old_df = pd.read_csv(csv_filename, delimiter=",", dtype={target_name: np.str})
+    print(old_df)
+    df_undersampled = old_df[old_df['Class'] == "0"]
+    a = df_undersampled[:2000]
+    df_fraud = old_df[old_df['Class'] == "1"]
+    df = pd.concat([df_fraud, df_fraud])
+    df = pd.concat([a, df])
+    df = df.drop(['Time','Amount'], axis=1)
+    print(df)
     # Check target exists
     if list(df.columns.values).count(target_name) != 1:
         raise Exception("Need exactly 1 count of '{}' in {}".format(target_name, csv_filename))

@@ -6,24 +6,25 @@
 import math, random
 import numpy as np
 
+
 class NeuralNetwork:
 
     def __init__(self, input_dim=None, output_dim=None, hidden_layers=None, seed=1):
         if (input_dim is None) or (output_dim is None) or (hidden_layers is None):
             raise Exception("Invalid arguments given!")
-        self.input_dim = input_dim # number of input nodes
-        self.output_dim = output_dim # number of output nodes
-        self.hidden_layers = hidden_layers # number of hidden nodes @ each layer
+        self.input_dim = input_dim  # number of input nodes
+        self.output_dim = output_dim  # number of output nodes
+        self.hidden_layers = hidden_layers  # number of hidden nodes @ each layer
         self.network = self._build_network(seed=seed)
 
     # Train network
     def train(self, X, y, eta=0.5, n_epochs=200):
         for epoch in range(n_epochs):
             for (x_, y_) in zip(X, y):
-                self._forward_pass(x_) # forward pass (update node["output"])
-                yhot_ = self._one_hot_encoding(y_, self.output_dim) # one-hot target
-                self._backward_pass(yhot_) # backward pass error (update node["delta"])
-                self._update_weights(x_, eta) # update weights (update node["weight"])
+                self._forward_pass(x_)  # forward pass (update node["output"])
+                yhot_ = self._one_hot_encoding(y_, self.output_dim)  # one-hot target
+                self._backward_pass(yhot_)  # backward pass error (update node["delta"])
+                self._update_weights(x_, eta)  # update weights (update node["weight"])
 
     # Predict using argmax of logits
     def predict(self, X):
@@ -44,10 +45,10 @@ class NeuralNetwork:
         def _layer(input_dim, output_dim):
             layer = []
             for i in range(output_dim):
-                weights = [random.random() for _ in range(input_dim)] # sample N(0,1)
-                node = {"weights": weights, # list of weights
-                        "output": None, # scalar
-                        "delta": None} # scalar
+                weights = [random.random() for _ in range(input_dim)]  # sample N(0,1)
+                node = {"weights": weights,  # list of weights
+                        "output": None,  # scalar
+                        "delta": None}  # scalar
                 layer.append(node)
             return layer
 
@@ -58,7 +59,7 @@ class NeuralNetwork:
         else:
             network.append(_layer(self.input_dim, self.hidden_layers[0]))
             for i in range(1, len(self.hidden_layers)):
-                network.append(_layer(self.hidden_layers[i-1], self.hidden_layers[i]))
+                network.append(_layer(self.hidden_layers[i - 1], self.hidden_layers[i]))
             network.append(_layer(self.hidden_layers[-1], self.output_dim))
 
         return network
@@ -72,14 +73,14 @@ class NeuralNetwork:
             for node in layer:
                 node['output'] = transfer(self._dotprod(node['weights'], x_in))
                 x_out.append(node['output'])
-            x_in = x_out # set output as next input
+            x_in = x_out  # set output as next input
         return x_in
 
     # Backward-pass (updates node['delta'], L2 loss is assumed)
     def _backward_pass(self, yhot):
-        transfer_derivative = self._sigmoid_derivative # sig' = f(sig)
+        transfer_derivative = self._sigmoid_derivative  # sig' = f(sig)
         n_layers = len(self.network)
-        for i in reversed(range(n_layers)): # traverse backwards
+        for i in reversed(range(n_layers)):  # traverse backwards
             if i == n_layers - 1:
                 # Difference between logits and one-hot target
                 for j, node in enumerate(self.network[i]):
@@ -88,15 +89,17 @@ class NeuralNetwork:
             else:
                 # Weighted sum of deltas from upper layer
                 for j, node in enumerate(self.network[i]):
-                    err = sum([node_['weights'][j] * node_['delta'] for node_ in self.network[i+1]])
+                    err = sum([node_['weights'][j] * node_['delta'] for node_ in self.network[i + 1]])
                     node['delta'] = err * transfer_derivative(node['output'])
 
     # Update weights (updates node['weight'])
     def _update_weights(self, x, eta):
         for i, layer in enumerate(self.network):
             # Grab input values
-            if i == 0: inputs = x
-            else: inputs = [node_['output'] for node_ in self.network[i-1]]
+            if i == 0:
+                inputs = x
+            else:
+                inputs = [node_['output'] for node_ in self.network[i - 1]]
             # Update weights
             for node in layer:
                 for j, input in enumerate(inputs):
@@ -109,11 +112,14 @@ class NeuralNetwork:
 
     # Sigmoid (activation function)
     def _sigmoid(self, x):
-        return 1.0/(1.0+math.exp(-x))
+        try:
+            return 1.0 / (1.0 + math.exp(-x))
+        except OverflowError:
+            return float('inf')
 
     # Sigmoid derivative
     def _sigmoid_derivative(self, sigmoid):
-        return sigmoid*(1.0-sigmoid)
+        return sigmoid * (1.0 - sigmoid)
 
     # One-hot encoding
     def _one_hot_encoding(self, idx, output_dim):

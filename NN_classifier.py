@@ -16,11 +16,11 @@ def main():
     # ===================================
     # Settings
     # ===================================
-    csv_filename = "data/seeds_dataset.csv"
-    hidden_layers = [5] # number of nodes in hidden layers i.e. [layer1, layer2, ...]
+    csv_filename = "data/creditcard.csv"
+    hidden_layers = [5,5,5] # number of nodes in hidden layers i.e. [layer1, layer2, ...]
     eta = 0.1 # learning rate
-    n_epochs = 400 # number of training epochs
-    n_folds = 4 # number of folds for cross-validation
+    n_epochs = 200 # number of training epochs
+    n_folds = 3 # number of folds for cross-validation
     seed_crossval = 1 # seed for cross-validation
     seed_weights = 1 # seed for NN weight initialization
 
@@ -28,7 +28,7 @@ def main():
     # Read csv data + normalize features
     # ===================================
     print("Reading '{}'...".format(csv_filename))
-    X, y, n_classes = utils.read_csv(csv_filename, target_name="y", normalize=True)
+    X, y, n_classes = utils.read_csv(csv_filename, target_name="Class", normalize=False)
     N, d = X.shape
     print(" -> X.shape = {}, y.shape = {}, n_classes = {}\n".format(X.shape, y.shape, n_classes))
 
@@ -72,8 +72,18 @@ def main():
         # Compute training/test accuracy score from predicted values
         acc_train.append(100*np.sum(y_train==ypred_train)/len(y_train))
         acc_valid.append(100*np.sum(y_valid==ypred_valid)/len(y_valid))
-
+        print("TP: " + str(np.sum((y_valid == ypred_valid) & (y_valid == 1))))
+        print("TN: " + str(np.sum((y_valid == ypred_valid) & (y_valid == 0))))
+        print("FP: " + str(np.sum((y_valid != ypred_valid) & (y_valid == 1))))
+        print("FN: " + str(np.sum((y_valid != ypred_valid) & (y_valid == 0))))
+        TP = np.sum((y_valid == ypred_valid) & (y_valid == 1))
+        TN = np.sum((y_valid == ypred_valid) & (y_valid == 0))
+        FP = np.sum((y_valid != ypred_valid) & (y_valid == 1))
+        FN = np.sum((y_valid != ypred_valid) & (y_valid == 0))
+        precision = TP / (TP + FP)
+        recall =  TP / (TP + FN)
         # Print cross-validation result
+        print(str(2 * precision *recall / (precision + recall)))
         print(" Fold {}/{}: acc_train = {:.2f}%, acc_valid = {:.2f}% (n_train = {}, n_valid = {})".format(
             i+1, n_folds, acc_train[-1], acc_valid[-1], len(X_train), len(X_valid)))
 
